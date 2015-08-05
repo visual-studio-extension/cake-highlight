@@ -51,7 +51,7 @@ namespace LuaLanguage
             filter.Next = next;
         }
     }
-
+    
     internal sealed class CommandFilter : IOleCommandTarget
     {
         ICompletionSession _currentSession;

@@ -69,7 +69,9 @@ namespace LuaLanguage
                 new Completion("then"),
                 new Completion("true"),
                 new Completion("until"),
-                new Completion("while")
+                new Completion("while"),
+
+                 new Completion("{}")
             };
             
             ITextSnapshot snapshot = _buffer.CurrentSnapshot;

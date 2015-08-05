@@ -47,11 +47,13 @@ namespace LuaLanguage
 
         ITextBuffer _buffer;
         IDictionary<string, LuaTokenTypes> _luaTypes;
+        IDictionary<string, LuaTokenTypes> _luaMarkers;
 
         internal LuaTokenTagger(ITextBuffer buffer)
         {
             _buffer = buffer;
             _luaTypes = new Dictionary<string, LuaTokenTypes>();
+            _luaMarkers = new Dictionary<string, LuaTokenTypes>();
 
             _luaTypes["and"] = LuaTokenTypes.ReservedWord;
             _luaTypes["break"] = LuaTokenTypes.ReservedWord;
@@ -74,6 +76,8 @@ namespace LuaLanguage
             _luaTypes["until"] = LuaTokenTypes.ReservedWord;
             _luaTypes["while"] = LuaTokenTypes.ReservedWord;
 
+            _luaTypes["{}"] = LuaTokenTypes.ReservedWord;
+
             _luaTypes[">"] = LuaTokenTypes.Operators;
             _luaTypes["="] = LuaTokenTypes.Operators;
             _luaTypes["<"] = LuaTokenTypes.Operators;
@@ -86,6 +90,8 @@ namespace LuaLanguage
             _luaTypes[".."] = LuaTokenTypes.Operators;
             _luaTypes["&&"] = LuaTokenTypes.Operators;
             _luaTypes["||"] = LuaTokenTypes.Operators;
+
+            _luaMarkers["\""] = LuaTokenTypes.Operators; //Open quote
         }
 
         public event EventHandler<SnapshotSpanEventArgs> TagsChanged
@@ -110,6 +116,14 @@ namespace LuaLanguage
                         var tokenSpan = new SnapshotSpan(curSpan.Snapshot, new Span(curLoc, luaToken.Length));
                         if( tokenSpan.IntersectsWith(curSpan) ) 
                             yield return new TagSpan<LuaTokenTag>(tokenSpan, 
+                                                                  new LuaTokenTag(_luaTypes[luaToken]));
+                    }
+
+                    if (_luaMarkers.ContainsKey(luaToken))
+                    {
+                        var tokenSpan = new SnapshotSpan(curSpan.Snapshot, new Span(curLoc, luaToken.Length));
+                        if (tokenSpan.IntersectsWith(curSpan))
+                            yield return new TagSpan<LuaTokenTag>(tokenSpan,
                                                                   new LuaTokenTag(_luaTypes[luaToken]));
                     }
 
