@@ -12,6 +12,7 @@
 namespace LuaLanguage
 {
     using System;
+    using ChärmLua;
     using System.Collections.Generic;
     using System.ComponentModel.Composition;
     using Microsoft.VisualStudio.Text;
@@ -19,6 +20,7 @@ namespace LuaLanguage
     using Microsoft.VisualStudio.Text.Editor;
     using Microsoft.VisualStudio.Text.Tagging;
     using Microsoft.VisualStudio.Utilities;
+    using System.Text.RegularExpressions;
 
     [Export(typeof(ITaggerProvider))]
     [ContentType("lua")]
@@ -101,8 +103,6 @@ namespace LuaLanguage
         public IEnumerable<ITagSpan<LuaTokenTag>> GetTags(NormalizedSnapshotSpanCollection spans)
         {
             bool singleQuote = false;
-            bool multiComment = false;
-            List<SnapshotSpan> stringMarked = new List<SnapshotSpan>();
 
             foreach (SnapshotSpan curSpan in spans)
             {
@@ -129,35 +129,76 @@ namespace LuaLanguage
                         if (tokenSpan.IntersectsWith(curSpan))
                             yield return new TagSpan<LuaTokenTag>(tokenSpan,
                                                                   new LuaTokenTag(_luaTypes[luaToken]));
-                    }
-                    if (text.StartsWith("--", StringComparison.Ordinal))
-                    {
-                        yield return new TagSpan<LuaTokenTag>(containingLine.Extent,
-                                                                  new LuaTokenTag(LuaTokenTypes.Comment));
-                    }
-                    #region Quote Code
-                    if (luaToken.StartsWith("\'"))
-                    {
-                        singleQuote = true;
-                    }
-                    else if (luaToken.EndsWith("\'"))
-                    {
-                        singleQuote = false;
+                    }                                      
 
-                        foreach (SnapshotSpan spanString in stringMarked)
-                        {
-                            yield return new TagSpan<LuaTokenTag>(spanString,
-                                                                  new LuaTokenTag(LuaTokenTypes.StringMarker));
-                        }
-                    }
-
-                    if (singleQuote)
+                    if (text.Contains("--"))
                     {
                         var tokenSpan = new SnapshotSpan(curSpan.Snapshot, new Span(curLoc, luaToken.Length));
-                        stringMarked.Add(tokenSpan);
+
+                        if (tokenSpan.IntersectsWith(curSpan))
+                            yield return new TagSpan<LuaTokenTag>(containingLine.Extent,
+                                                                  new LuaTokenTag(LuaTokenTypes.Comment));
                     }
+
+                    #region Quote Code
+                    /*if (luaToken.StartsWith("\'") && luaToken.EndsWith("\'") && luaToken.Length > 1)
+                    {
+                        var tokenSpan = new SnapshotSpan(curSpan.Snapshot, new Span(curLoc, luaToken.Length));
+
+                        if (tokenSpan.IntersectsWith(curSpan))
+                            yield return new TagSpan<LuaTokenTag>(tokenSpan,
+                                                                  new LuaTokenTag(LuaTokenTypes.StringMarker));
+                    }
+                    else
+                    {
+                        if (luaToken.Contains("\'") && !singleQuote)
+                        {
+                            singleQuote = true;
+                            var tokenSpan = new SnapshotSpan(curSpan.Snapshot, new Span(curLoc, luaToken.Length));
+
+                            if (tokenSpan.IntersectsWith(curSpan))
+                                yield return new TagSpan<LuaTokenTag>(tokenSpan,
+                                                                      new LuaTokenTag(LuaTokenTypes.StringMarker));
+                        }
+                        else if (luaToken.Contains("\'") && singleQuote)
+                        {
+                            singleQuote = false;
+                            var tokenSpan = new SnapshotSpan(curSpan.Snapshot, new Span(curLoc, luaToken.Length));
+
+                            if (tokenSpan.IntersectsWith(curSpan))
+                                yield return new TagSpan<LuaTokenTag>(tokenSpan,
+                                                                      new LuaTokenTag(LuaTokenTypes.StringMarker));
+                        }
+                        else if (singleQuote)
+                        {
+                            var tokenSpan = new SnapshotSpan(curSpan.Snapshot, new Span(curLoc, luaToken.Length));
+
+                            if (tokenSpan.IntersectsWith(curSpan))
+                                yield return new TagSpan<LuaTokenTag>(tokenSpan,
+                                                                        new LuaTokenTag(LuaTokenTypes.StringMarker));
+                        }
+                    }*/
                     #endregion
 
+                    #region Quote Code
+                    if (text.Contains("\'"))
+                    {
+                        int startingQuote = CharmClass.NthIndexOf(text, "\'", 1);
+                        int finishingQuote = CharmClass.NthIndexOf(text, "\'", 2);
+
+                        if (finishingQuote == -1)
+                            finishingQuote = text.Length;
+
+                        Console.WriteLine("Start: " + startingQuote + "Finish: " + finishingQuote);
+
+                        var tokenSpan = new SnapshotSpan(curSpan.Snapshot, new Span(startingQuote, finishingQuote));
+
+                        if (tokenSpan.IntersectsWith(curSpan))
+                            yield return new TagSpan<LuaTokenTag>(tokenSpan,
+                                                                    new LuaTokenTag(LuaTokenTypes.StringMarker));
+                    }
+
+                    #endregion
                     //add an extra char location because of the space
                     curLoc += luaToken.Length + 1;
                 }
