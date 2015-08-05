@@ -61,5 +61,49 @@ namespace LuaLanguage
             ForegroundColor = Colors.ForestGreen;
         }
     }
+
+    /// <summary>
+    /// Defines the editor format for the comment classification type. Text is colored IndianRed
+    /// </summary>
+    [Export(typeof(EditorFormatDefinition))]
+    [ClassificationType(ClassificationTypeNames = "comment")]
+    [Name("comment")]
+    //this should be visible to the end user
+    [UserVisible(false)]
+    //set the priority to be highter than the default classifiers
+    [Order(Before = Priority.High)]
+    internal sealed class Comment : ClassificationFormatDefinition
+    {
+        /// <summary>
+        /// Defines the visual format for the "question" classification type
+        /// </summary>
+        public Comment()
+        {
+            DisplayName = "comment"; //human readable version of the name
+            ForegroundColor = Colors.IndianRed;
+        }
+    }
+
+    /// <summary>
+    /// Defines the editor format for the comment classification type. Text is colored IndianRed
+    /// </summary>
+    [Export(typeof(EditorFormatDefinition))]
+    [ClassificationType(ClassificationTypeNames = "stringMarker")]
+    [Name("stringMarker")]
+    //this should be visible to the end user
+    [UserVisible(false)]
+    //set the priority to be after the default classifiers
+    [Order(Before = Priority.Default)]
+    internal sealed class StringMarker : ClassificationFormatDefinition
+    {
+        /// <summary>
+        /// Defines the visual format for the "question" classification type
+        /// </summary>
+        public StringMarker()
+        {
+            DisplayName = "stringMarker"; //human readable version of the name
+            ForegroundColor = Colors.Aquamarine;
+        }
+    }
     #endregion //Format definition
 }

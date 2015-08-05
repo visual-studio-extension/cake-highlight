@@ -18,6 +18,6 @@ namespace LuaLanguage
 {
     public enum LuaTokenTypes
     {
-        ReservedWord, Operators
+        ReservedWord, Operators, Comment, StringMarker
     }
 }

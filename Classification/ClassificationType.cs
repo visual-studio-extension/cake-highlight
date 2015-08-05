@@ -31,6 +31,20 @@ namespace LuaLanguage
         [Export(typeof(ClassificationTypeDefinition))]
         [Name("operators")]
         internal static ClassificationTypeDefinition operators = null;
+
+        /// <summary>
+        /// Defines the "comment" classification type.
+        /// </summary>
+        [Export(typeof(ClassificationTypeDefinition))]
+        [Name("comment")]
+        internal static ClassificationTypeDefinition comment = null;
+
+        /// <summary>
+        /// Defines the "string" classification type.
+        /// </summary>
+        [Export(typeof(ClassificationTypeDefinition))]
+        [Name("stringMarker")]
+        internal static ClassificationTypeDefinition stringMarker = null;
         #endregion
     }
 }

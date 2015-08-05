@@ -1,5 +1,7 @@
-﻿print("Hello World!")
-
-if something + 5 then
-	otherthing
+﻿if foo then
+	bar
 end
+
+--Test Comment!
+
+'Test String!'

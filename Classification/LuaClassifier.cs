@@ -70,6 +70,8 @@ namespace LuaLanguage
             _luaTypes = new Dictionary<LuaTokenTypes, IClassificationType>();
             _luaTypes[LuaTokenTypes.ReservedWord] = typeService.GetClassificationType("ReservedWord");
             _luaTypes[LuaTokenTypes.Operators] = typeService.GetClassificationType("Operators");
+            _luaTypes[LuaTokenTypes.Comment] = typeService.GetClassificationType("Comment");
+            _luaTypes[LuaTokenTypes.StringMarker] = typeService.GetClassificationType("StringMarker");
         }
 
         public event EventHandler<SnapshotSpanEventArgs> TagsChanged

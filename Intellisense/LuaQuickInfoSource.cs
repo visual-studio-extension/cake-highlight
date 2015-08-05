@@ -85,6 +85,18 @@ namespace LuaLanguage
                     applicableToSpan = _buffer.CurrentSnapshot.CreateTrackingSpan(tagSpan, SpanTrackingMode.EdgeExclusive);
                     quickInfoContent.Add("A language operator");
                 }
+                else if (curTag.Tag.type == LuaTokenTypes.Comment)
+                {
+                    var tagSpan = curTag.Span.GetSpans(_buffer).First();
+                    applicableToSpan = _buffer.CurrentSnapshot.CreateTrackingSpan(tagSpan, SpanTrackingMode.EdgeExclusive);
+                    quickInfoContent.Add("A comment");
+                }
+                else if (curTag.Tag.type == LuaTokenTypes.StringMarker)
+                {
+                    var tagSpan = curTag.Span.GetSpans(_buffer).First();
+                    applicableToSpan = _buffer.CurrentSnapshot.CreateTrackingSpan(tagSpan, SpanTrackingMode.EdgeExclusive);
+                    quickInfoContent.Add("A string");
+                }
             }
         }
 

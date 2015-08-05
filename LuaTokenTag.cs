@@ -90,8 +90,6 @@ namespace LuaLanguage
             _luaTypes[".."] = LuaTokenTypes.Operators;
             _luaTypes["&&"] = LuaTokenTypes.Operators;
             _luaTypes["||"] = LuaTokenTypes.Operators;
-
-            _luaMarkers["\""] = LuaTokenTypes.Operators; //Open quote
         }
 
         public event EventHandler<SnapshotSpanEventArgs> TagsChanged
@@ -102,6 +100,9 @@ namespace LuaLanguage
 
         public IEnumerable<ITagSpan<LuaTokenTag>> GetTags(NormalizedSnapshotSpanCollection spans)
         {
+            bool singleQuote = false;
+            bool multiComment = false;
+            List<SnapshotSpan> stringMarked = new List<SnapshotSpan>();
 
             foreach (SnapshotSpan curSpan in spans)
             {
@@ -109,23 +110,53 @@ namespace LuaLanguage
                 int curLoc = containingLine.Start.Position;
                 string[] tokens = containingLine.GetText().ToLower().Split(' ');
 
+                string text = containingLine.Snapshot.GetText(
+                        new SnapshotSpan(containingLine.Start, Math.Min(4, containingLine.Length)));
+
                 foreach (string luaToken in tokens)
                 {
                     if (_luaTypes.ContainsKey(luaToken))
                     {
                         var tokenSpan = new SnapshotSpan(curSpan.Snapshot, new Span(curLoc, luaToken.Length));
-                        if( tokenSpan.IntersectsWith(curSpan) ) 
+                        if ( tokenSpan.IntersectsWith(curSpan) ) 
                             yield return new TagSpan<LuaTokenTag>(tokenSpan, 
                                                                   new LuaTokenTag(_luaTypes[luaToken]));
                     }
-
                     if (_luaMarkers.ContainsKey(luaToken))
                     {
                         var tokenSpan = new SnapshotSpan(curSpan.Snapshot, new Span(curLoc, luaToken.Length));
+
                         if (tokenSpan.IntersectsWith(curSpan))
                             yield return new TagSpan<LuaTokenTag>(tokenSpan,
                                                                   new LuaTokenTag(_luaTypes[luaToken]));
                     }
+                    if (text.StartsWith("--", StringComparison.Ordinal))
+                    {
+                        yield return new TagSpan<LuaTokenTag>(containingLine.Extent,
+                                                                  new LuaTokenTag(LuaTokenTypes.Comment));
+                    }
+                    #region Quote Code
+                    if (luaToken.StartsWith("\'"))
+                    {
+                        singleQuote = true;
+                    }
+                    else if (luaToken.EndsWith("\'"))
+                    {
+                        singleQuote = false;
+
+                        foreach (SnapshotSpan spanString in stringMarked)
+                        {
+                            yield return new TagSpan<LuaTokenTag>(spanString,
+                                                                  new LuaTokenTag(LuaTokenTypes.StringMarker));
+                        }
+                    }
+
+                    if (singleQuote)
+                    {
+                        var tokenSpan = new SnapshotSpan(curSpan.Snapshot, new Span(curLoc, luaToken.Length));
+                        stringMarked.Add(tokenSpan);
+                    }
+                    #endregion
 
                     //add an extra char location because of the space
                     curLoc += luaToken.Length + 1;
