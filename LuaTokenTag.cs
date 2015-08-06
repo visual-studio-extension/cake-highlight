@@ -102,8 +102,6 @@ namespace LuaLanguage
 
         public IEnumerable<ITagSpan<LuaTokenTag>> GetTags(NormalizedSnapshotSpanCollection spans)
         {
-            bool singleQuote = false;
-
             foreach (SnapshotSpan curSpan in spans)
             {
                 ITextSnapshotLine containingLine = curSpan.Start.GetContainingLine();
@@ -140,65 +138,74 @@ namespace LuaLanguage
                                                                   new LuaTokenTag(LuaTokenTypes.Comment));
                     }
 
-                    #region Quote Code
-                    /*if (luaToken.StartsWith("\'") && luaToken.EndsWith("\'") && luaToken.Length > 1)
+                    #region Single Quote Code
+                    int oddSingleQuote = 1;
+                    int evenSingleQuote = 2;
+
+                    int countSingleQuote = curSpan.Snapshot.GetText().Length - curSpan.Snapshot.GetText().Replace("\'", "").Length;
+
+                    if (text.Contains("\'"))
                     {
-                        var tokenSpan = new SnapshotSpan(curSpan.Snapshot, new Span(curLoc, luaToken.Length));
-
-                        if (tokenSpan.IntersectsWith(curSpan))
-                            yield return new TagSpan<LuaTokenTag>(tokenSpan,
-                                                                  new LuaTokenTag(LuaTokenTypes.StringMarker));
-                    }
-                    else
-                    {
-                        if (luaToken.Contains("\'") && !singleQuote)
+                        do
                         {
-                            singleQuote = true;
-                            var tokenSpan = new SnapshotSpan(curSpan.Snapshot, new Span(curLoc, luaToken.Length));
+                            int startingQuote = CharmClass.NthIndexOf(curSpan.Snapshot.GetText(), "\'", oddSingleQuote);
+                            int finishingQuote = CharmClass.NthIndexOf(curSpan.Snapshot.GetText(), "\'", evenSingleQuote);
 
-                            if (tokenSpan.IntersectsWith(curSpan))
-                                yield return new TagSpan<LuaTokenTag>(tokenSpan,
-                                                                      new LuaTokenTag(LuaTokenTypes.StringMarker));
-                        }
-                        else if (luaToken.Contains("\'") && singleQuote)
-                        {
-                            singleQuote = false;
-                            var tokenSpan = new SnapshotSpan(curSpan.Snapshot, new Span(curLoc, luaToken.Length));
+                            if (finishingQuote == -1)
+                                finishingQuote = text.Length;
+                            else
+                                finishingQuote = finishingQuote - startingQuote + 1; //+1 to higlight the closing quote mark
 
-                            if (tokenSpan.IntersectsWith(curSpan))
-                                yield return new TagSpan<LuaTokenTag>(tokenSpan,
-                                                                      new LuaTokenTag(LuaTokenTypes.StringMarker));
-                        }
-                        else if (singleQuote)
-                        {
-                            var tokenSpan = new SnapshotSpan(curSpan.Snapshot, new Span(curLoc, luaToken.Length));
+                            Console.WriteLine("Start: " + startingQuote + "Finish: " + finishingQuote);
+
+                            var tokenSpan = new SnapshotSpan(curSpan.Snapshot, new Span(startingQuote, finishingQuote));
 
                             if (tokenSpan.IntersectsWith(curSpan))
                                 yield return new TagSpan<LuaTokenTag>(tokenSpan,
                                                                         new LuaTokenTag(LuaTokenTypes.StringMarker));
+
+                            oddSingleQuote = oddSingleQuote + 2;
+                            evenSingleQuote = evenSingleQuote + 2;
                         }
-                    }*/
-                    #endregion
-
-                    #region Quote Code
-                    if (text.Contains("\'"))
-                    {
-                        int startingQuote = CharmClass.NthIndexOf(text, "\'", 1);
-                        int finishingQuote = CharmClass.NthIndexOf(text, "\'", 2);
-
-                        if (finishingQuote == -1)
-                            finishingQuote = text.Length;
-
-                        Console.WriteLine("Start: " + startingQuote + "Finish: " + finishingQuote);
-
-                        var tokenSpan = new SnapshotSpan(curSpan.Snapshot, new Span(startingQuote, finishingQuote));
-
-                        if (tokenSpan.IntersectsWith(curSpan))
-                            yield return new TagSpan<LuaTokenTag>(tokenSpan,
-                                                                    new LuaTokenTag(LuaTokenTypes.StringMarker));
+                        while(evenSingleQuote < countSingleQuote + 1);                        
                     }
 
                     #endregion
+
+                    #region Double Quote Code
+                    int oddDoubleQuote = 1;
+                    int evenDoubleQuote = 2;
+
+                    int countDoubleQuote = curSpan.Snapshot.GetText().Length - curSpan.Snapshot.GetText().Replace("\"", "").Length;
+
+                    if (text.Contains("\""))
+                    {
+                        do
+                        {
+                            int startingQuote = CharmClass.NthIndexOf(curSpan.Snapshot.GetText(), "\"", oddDoubleQuote);
+                            int finishingQuote = CharmClass.NthIndexOf(curSpan.Snapshot.GetText(), "\"", evenDoubleQuote);
+
+                            if (finishingQuote == -1)
+                                finishingQuote = text.Length;
+                            else
+                                finishingQuote = finishingQuote - startingQuote + 1; //+1 to higlight the closing quote mark
+
+                            Console.WriteLine("Start: " + startingQuote + "Finish: " + finishingQuote);
+
+                            var tokenSpan = new SnapshotSpan(curSpan.Snapshot, new Span(startingQuote, finishingQuote));
+
+                            if (tokenSpan.IntersectsWith(curSpan))
+                                yield return new TagSpan<LuaTokenTag>(tokenSpan,
+                                                                        new LuaTokenTag(LuaTokenTypes.StringMarker));
+
+                            oddDoubleQuote = oddDoubleQuote + 2;
+                            evenDoubleQuote = evenDoubleQuote + 2;
+                        }
+                        while (evenDoubleQuote < countDoubleQuote + 1);
+                    }
+
+                    #endregion
+
                     //add an extra char location because of the space
                     curLoc += luaToken.Length + 1;
                 }
