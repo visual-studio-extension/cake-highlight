@@ -14,7 +14,7 @@ using System.Windows.Media;
 using Microsoft.VisualStudio.Text.Classification;
 using Microsoft.VisualStudio.Utilities;
 
-namespace LuaLanguage
+namespace Cake
 {
     #region Format definition   
 

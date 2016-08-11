@@ -20,7 +20,7 @@ using Microsoft.VisualStudio.Text.Tagging;
 using System.ComponentModel.Composition;
 using Microsoft.VisualStudio.Utilities;
 
-namespace LuaLanguage
+namespace Cake
 {
     [Export(typeof(ICompletionSourceProvider))]
     [ContentType("lua")]

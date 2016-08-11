@@ -11,9 +11,9 @@
 //***************************************************************************-->
 <PackageManifest Version="2.0.0" xmlns:d="http://schemas.microsoft.com/developer/vsx-schema-design/2011" xmlns="http://schemas.microsoft.com/developer/vsx-schema/2011">
   <Metadata>
-    <Identity Id="c729d6b2-f512-49ed-893d-a8f61f25db98" Version="1.0" Language="en-US" Publisher="Microsoft" />
-    <DisplayName>LuaLanguage</DisplayName>
-    <Description xml:space="preserve">ChärmLua - Lua language support</Description>
+    <Identity Id="E32918E4-04D6-4A6A-A14E-98C7A9A0A6CB" Version="1.0" Language="en-US" Publisher="Microsoft" />
+    <DisplayName>Cake.Hightlight</DisplayName>
+    <Description xml:space="preserve">Cake.Highlight - Cake language support</Description>
   </Metadata>
   <Installation>
     <InstallationTarget Id="Microsoft.VisualStudio.Pro" Version="14.0" />

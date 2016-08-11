@@ -9,7 +9,7 @@
 //
 //***************************************************************************
 
-namespace LuaLanguage
+namespace Cake
 {
     using System;
     using System.Collections.Generic;
@@ -32,7 +32,7 @@ namespace LuaLanguage
         internal static ContentTypeDefinition LuaContentType = null;
 
         [Export]
-        [FileExtension(".lua")]
+        [FileExtension(".cake")]
         [ContentType("lua")]
         internal static FileExtensionToContentTypeDefinition LuaFileType = null;
 

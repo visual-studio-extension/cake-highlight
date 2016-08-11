@@ -13,7 +13,7 @@ using System.ComponentModel.Composition;
 using Microsoft.VisualStudio.Text.Classification;
 using Microsoft.VisualStudio.Utilities;
 
-namespace LuaLanguage
+namespace Cake
 {
     internal static class OrdinaryClassificationDefinition
     {

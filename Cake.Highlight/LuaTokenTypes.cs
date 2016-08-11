@@ -14,7 +14,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace LuaLanguage
+namespace Cake
 {
     public enum LuaTokenTypes
     {

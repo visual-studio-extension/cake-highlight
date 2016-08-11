@@ -24,7 +24,7 @@ using Microsoft.VisualStudio;
 using System.Windows;
 using System.Runtime.InteropServices;
 
-namespace LuaLanguage
+namespace Cake
 {
     #region Command Filter
 
