@@ -17,7 +17,6 @@ namespace Cake
 {
     internal static class OrdinaryClassificationDefinition
     {
-        #region Type definition
         /// <summary>
         /// Defines the "reservedWord" classification type.
         /// </summary>
@@ -31,6 +30,10 @@ namespace Cake
         [Export(typeof(ClassificationTypeDefinition))]
         [Name("operators")]
         internal static ClassificationTypeDefinition operators = null;
-        #endregion
+
+
+        [Export(typeof(ClassificationFormatDefinition))]
+        [Name("functions")]
+        internal static ClassificationFormatDefinition functions = null;
     }
 }

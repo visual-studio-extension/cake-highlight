@@ -16,8 +16,6 @@ using Microsoft.VisualStudio.Utilities;
 
 namespace Cake
 {
-    #region Format definition   
-
     /// <summary>
     /// Defines the editor format for the reservedWord classification type. Text is colored Green
     /// </summary>
@@ -37,6 +35,29 @@ namespace Cake
         {
             DisplayName = "reservedWord"; //human readable version of the name
             ForegroundColor = Colors.Firebrick;
+        }
+    }
+
+
+    /// <summary>
+    /// Defines the editor format for the reservedWord classification type. Text is colored Green
+    /// </summary>
+    [Export(typeof(EditorFormatDefinition))]
+    [ClassificationType(ClassificationTypeNames = "functions")]
+    [Name("functions")]
+    //this should be visible to the end user
+    [UserVisible(false)]
+    //set the priority to be after the default classifiers
+    [Order(Before = Priority.Default)]
+    internal sealed class Functions : ClassificationFormatDefinition
+    {
+        /// <summary>
+        /// Defines the visual format for the "question" classification type
+        /// </summary>
+        public Functions()
+        {
+            DisplayName = "functions"; //human readable version of the name
+            ForegroundColor = Colors.Green;
         }
     }
 
@@ -61,5 +82,4 @@ namespace Cake
             ForegroundColor = Colors.ForestGreen;
         }
     }
-    #endregion //Format definition
 }

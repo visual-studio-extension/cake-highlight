@@ -66,7 +66,7 @@ namespace Cake
             if (_disposed)
                 throw new ObjectDisposedException("TestQuickInfoSource");
 
-            var triggerPoint = (SnapshotPoint) session.GetTriggerPoint(_buffer.CurrentSnapshot);
+            var triggerPoint = (SnapshotPoint)session.GetTriggerPoint(_buffer.CurrentSnapshot);
 
             if (triggerPoint == null)
                 return;
@@ -84,6 +84,12 @@ namespace Cake
                     var tagSpan = curTag.Span.GetSpans(_buffer).First();
                     applicableToSpan = _buffer.CurrentSnapshot.CreateTrackingSpan(tagSpan, SpanTrackingMode.EdgeExclusive);
                     quickInfoContent.Add("A language operator");
+                }
+                else if (curTag.Tag.type == CakeTokenTypes.Functions)
+                {
+                    var tagSpan = curTag.Span.GetSpans(_buffer).First();
+                    applicableToSpan = _buffer.CurrentSnapshot.CreateTrackingSpan(tagSpan, SpanTrackingMode.EdgeExclusive);
+                    quickInfoContent.Add("A language functions");
                 }
             }
         }

@@ -18,6 +18,6 @@ namespace Cake
 {
     public enum CakeTokenTypes
     {
-        ReservedWord, Operators
+        ReservedWord, Operators, Functions
     }
 }

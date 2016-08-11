@@ -70,6 +70,7 @@ namespace Cake
             _cakeTypes = new Dictionary<CakeTokenTypes, IClassificationType>();
             _cakeTypes[CakeTokenTypes.ReservedWord] = typeService.GetClassificationType("ReservedWord");
             _cakeTypes[CakeTokenTypes.Operators] = typeService.GetClassificationType("Operators");
+            _cakeTypes[CakeTokenTypes.Functions] = typeService.GetClassificationType("Functions");
         }
 
         public event EventHandler<SnapshotSpanEventArgs> TagsChanged

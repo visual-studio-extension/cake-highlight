@@ -19,6 +19,7 @@ using Microsoft.VisualStudio.Text;
 using Microsoft.VisualStudio.Text.Tagging;
 using System.ComponentModel.Composition;
 using Microsoft.VisualStudio.Utilities;
+using Cake.Intellisense;
 
 namespace Cake
 {
@@ -50,27 +51,30 @@ namespace Cake
 
             List<Completion> completions = new List<Completion>()
             {
-                new Completion("and"),
-                new Completion("break"),
-                new Completion("do"),
-                new Completion("else"),
-                new Completion("elseif"),
-                new Completion("end"),
-                new Completion("false"),
-                new Completion("for"),
-                new Completion("function"),
-                new Completion("if"),
-                new Completion("local"),
-                new Completion("nil"),
-                new Completion("not"),
-                new Completion("or"),
-                new Completion("repeat"),
-                new Completion("return"),
-                new Completion("then"),
-                new Completion("true"),
-                new Completion("until"),
-                new Completion("while")
+                //new Completion("and"),
+                //new Completion("break"),
+                //new Completion("do"),
+                //new Completion("else"),
+                //new Completion("elseif"),
+                //new Completion("end"),
+                //new Completion("false"),
+                //new Completion("for"),
+                //new Completion("function"),
+                //new Completion("if"),
+                //new Completion("local"),
+                //new Completion("nil"),
+                //new Completion("not"),
+                //new Completion("or"),
+                //new Completion("repeat"),
+                //new Completion("return"),
+                //new Completion("then"),
+                //new Completion("true"),
+                //new Completion("until"),
+                //new Completion("while")
             };
+
+            // add cake functions
+            CakeFunctions.Functions.ToList().ForEach(x => completions.Add(new Completion(x)));
             
             ITextSnapshot snapshot = _buffer.CurrentSnapshot;
             var triggerPoint = (SnapshotPoint)session.GetTriggerPoint(snapshot);

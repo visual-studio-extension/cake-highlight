@@ -15,10 +15,10 @@ namespace Cake
     using System.Collections.Generic;
     using System.ComponentModel.Composition;
     using Microsoft.VisualStudio.Text;
-    using Microsoft.VisualStudio.Text.Classification;
-    using Microsoft.VisualStudio.Text.Editor;
     using Microsoft.VisualStudio.Text.Tagging;
     using Microsoft.VisualStudio.Utilities;
+    using System.Linq;
+    using Intellisense;
 
     [Export(typeof(ITaggerProvider))]
     [ContentType("cake")]
@@ -86,6 +86,13 @@ namespace Cake
             _cakeTypes[".."] = CakeTokenTypes.Operators;
             _cakeTypes["&&"] = CakeTokenTypes.Operators;
             _cakeTypes["||"] = CakeTokenTypes.Operators;
+
+
+            var functions = CakeFunctions.Functions;
+
+            functions.ToList().ForEach(fun => {
+                _cakeTypes[fun] = CakeTokenTypes.Functions;
+            });
         }
 
         public event EventHandler<SnapshotSpanEventArgs> TagsChanged

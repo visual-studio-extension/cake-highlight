@@ -184,6 +184,7 @@
   <ItemGroup>
     <Compile Include="Classification\ClassificationFormat.cs" />
     <Compile Include="Classification\ClassificationType.cs" />
+    <Compile Include="Intellisense\CakeFunctions.cs" />
     <Compile Include="Intellisense\CompletionController.cs" />
     <Compile Include="Intellisense\CompletionSource.cs" />
     <Compile Include="Intellisense\CakeQuickInfoSource.cs" />
