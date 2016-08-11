@@ -16,7 +16,7 @@ using System.Text;
 
 namespace Cake
 {
-    public enum LuaTokenTypes
+    public enum CakeTokenTypes
     {
         ReservedWord, Operators
     }

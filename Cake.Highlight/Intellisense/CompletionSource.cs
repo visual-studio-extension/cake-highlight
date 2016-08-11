@@ -23,22 +23,22 @@ using Microsoft.VisualStudio.Utilities;
 namespace Cake
 {
     [Export(typeof(ICompletionSourceProvider))]
-    [ContentType("lua")]
-    [Name("luaCompletion")]
-    class LuaCompletionSourceProvider : ICompletionSourceProvider
+    [ContentType("cake")]
+    [Name("cakeCompletion")]
+    class CakeCompletionSourceProvider : ICompletionSourceProvider
     {
         public ICompletionSource TryCreateCompletionSource(ITextBuffer textBuffer)
         {
-            return new LuaCompletionSource(textBuffer);
+            return new CakeCompletionSource(textBuffer);
         }
     }
 
-    class LuaCompletionSource : ICompletionSource
+    class CakeCompletionSource : ICompletionSource
     {
         private ITextBuffer _buffer;
         private bool _disposed = false;
         
-        public LuaCompletionSource(ITextBuffer buffer)
+        public CakeCompletionSource(ITextBuffer buffer)
         {
             _buffer = buffer;
         }
@@ -46,7 +46,7 @@ namespace Cake
         public void AugmentCompletionSession(ICompletionSession session, IList<CompletionSet> completionSets)
         {
             if (_disposed)
-                throw new ObjectDisposedException("LuaCompletionSource");
+                throw new ObjectDisposedException("CakeCompletionSource");
 
             List<Completion> completions = new List<Completion>()
             {

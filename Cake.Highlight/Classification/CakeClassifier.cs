@@ -21,20 +21,20 @@ namespace Cake
     using Microsoft.VisualStudio.Utilities;
 
     [Export(typeof(ITaggerProvider))]
-    [ContentType("lua")]
+    [ContentType("cake")]
     [TagType(typeof(ClassificationTag))]
-    internal sealed class LuaClassifierProvider : ITaggerProvider
+    internal sealed class CakeClassifierProvider : ITaggerProvider
     {
 
         [Export]
-        [Name("lua")]
+        [Name("cake")]
         [BaseDefinition("code")]
-        internal static ContentTypeDefinition LuaContentType = null;
+        internal static ContentTypeDefinition CakeContentType = null;
 
         [Export]
         [FileExtension(".cake")]
-        [ContentType("lua")]
-        internal static FileExtensionToContentTypeDefinition LuaFileType = null;
+        [ContentType("cake")]
+        internal static FileExtensionToContentTypeDefinition CakeFileType = null;
 
         [Import]
         internal IClassificationTypeRegistryService ClassificationTypeRegistry = null;
@@ -45,31 +45,31 @@ namespace Cake
         public ITagger<T> CreateTagger<T>(ITextBuffer buffer) where T : ITag
         {
 
-            ITagAggregator<LuaTokenTag> luaTagAggregator = 
-                                            aggregatorFactory.CreateTagAggregator<LuaTokenTag>(buffer);
+            ITagAggregator<CakeTokenTag> cakeTagAggregator = 
+                                            aggregatorFactory.CreateTagAggregator<CakeTokenTag>(buffer);
 
-            return new LuaClassifier(buffer, luaTagAggregator, ClassificationTypeRegistry) as ITagger<T>;
+            return new CakeClassifier(buffer, cakeTagAggregator, ClassificationTypeRegistry) as ITagger<T>;
         }
     }
 
-    internal sealed class LuaClassifier : ITagger<ClassificationTag>
+    internal sealed class CakeClassifier : ITagger<ClassificationTag>
     {
         ITextBuffer _buffer;
-        ITagAggregator<LuaTokenTag> _aggregator;
-        IDictionary<LuaTokenTypes, IClassificationType> _luaTypes;
+        ITagAggregator<CakeTokenTag> _aggregator;
+        IDictionary<CakeTokenTypes, IClassificationType> _cakeTypes;
 
         /// <summary>
         /// Construct the classifier and define search tokens
         /// </summary>
-        internal LuaClassifier(ITextBuffer buffer, 
-                               ITagAggregator<LuaTokenTag> luaTagAggregator, 
+        internal CakeClassifier(ITextBuffer buffer, 
+                               ITagAggregator<CakeTokenTag> cakeTagAggregator, 
                                IClassificationTypeRegistryService typeService)
         {
             _buffer = buffer;
-            _aggregator = luaTagAggregator;
-            _luaTypes = new Dictionary<LuaTokenTypes, IClassificationType>();
-            _luaTypes[LuaTokenTypes.ReservedWord] = typeService.GetClassificationType("ReservedWord");
-            _luaTypes[LuaTokenTypes.Operators] = typeService.GetClassificationType("Operators");
+            _aggregator = cakeTagAggregator;
+            _cakeTypes = new Dictionary<CakeTokenTypes, IClassificationType>();
+            _cakeTypes[CakeTokenTypes.ReservedWord] = typeService.GetClassificationType("ReservedWord");
+            _cakeTypes[CakeTokenTypes.Operators] = typeService.GetClassificationType("Operators");
         }
 
         public event EventHandler<SnapshotSpanEventArgs> TagsChanged
@@ -88,7 +88,7 @@ namespace Cake
                 var tagSpans = tagSpan.Span.GetSpans(spans[0].Snapshot);
                 yield return 
                     new TagSpan<ClassificationTag>(tagSpans[0], 
-                                                   new ClassificationTag(_luaTypes[tagSpan.Tag.type]));
+                                                   new ClassificationTag(_cakeTypes[tagSpan.Tag.type]));
             }
         }
     }

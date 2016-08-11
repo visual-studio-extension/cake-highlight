@@ -26,9 +26,9 @@ namespace Cake
     /// Factory for quick info sources
     /// </summary>
     [Export(typeof(IQuickInfoSourceProvider))]
-    [ContentType("lua")]
-    [Name("luaQuickInfo")]
-    class LuaQuickInfoSourceProvider : IQuickInfoSourceProvider
+    [ContentType("cake")]
+    [Name("cakeQuickInfo")]
+    class CakeQuickInfoSourceProvider : IQuickInfoSourceProvider
     {
 
         [Import]
@@ -36,21 +36,21 @@ namespace Cake
 
         public IQuickInfoSource TryCreateQuickInfoSource(ITextBuffer textBuffer)
         {
-            return new LuaQuickInfoSource(textBuffer, aggService.CreateTagAggregator<LuaTokenTag>(textBuffer));
+            return new CakeQuickInfoSource(textBuffer, aggService.CreateTagAggregator<CakeTokenTag>(textBuffer));
         }
     }
 
     /// <summary>
     /// Provides QuickInfo information to be displayed in a text buffer
     /// </summary>
-    class LuaQuickInfoSource : IQuickInfoSource
+    class CakeQuickInfoSource : IQuickInfoSource
     {
-        private ITagAggregator<LuaTokenTag> _aggregator;
+        private ITagAggregator<CakeTokenTag> _aggregator;
         private ITextBuffer _buffer;
         private bool _disposed = false;
 
 
-        public LuaQuickInfoSource(ITextBuffer buffer, ITagAggregator<LuaTokenTag> aggregator)
+        public CakeQuickInfoSource(ITextBuffer buffer, ITagAggregator<CakeTokenTag> aggregator)
         {
             _aggregator = aggregator;
             _buffer = buffer;
@@ -71,15 +71,15 @@ namespace Cake
             if (triggerPoint == null)
                 return;
 
-            foreach (IMappingTagSpan<LuaTokenTag> curTag in _aggregator.GetTags(new SnapshotSpan(triggerPoint, triggerPoint)))
+            foreach (IMappingTagSpan<CakeTokenTag> curTag in _aggregator.GetTags(new SnapshotSpan(triggerPoint, triggerPoint)))
             {
-                if (curTag.Tag.type == LuaTokenTypes.ReservedWord)
+                if (curTag.Tag.type == CakeTokenTypes.ReservedWord)
                 {
                     var tagSpan = curTag.Span.GetSpans(_buffer).First();
                     applicableToSpan = _buffer.CurrentSnapshot.CreateTrackingSpan(tagSpan, SpanTrackingMode.EdgeExclusive);
                     quickInfoContent.Add("A reserved word");
                 }
-                else if (curTag.Tag.type == LuaTokenTypes.Operators)
+                else if (curTag.Tag.type == CakeTokenTypes.Operators)
                 {
                     var tagSpan = curTag.Span.GetSpans(_buffer).First();
                     applicableToSpan = _buffer.CurrentSnapshot.CreateTrackingSpan(tagSpan, SpanTrackingMode.EdgeExclusive);
