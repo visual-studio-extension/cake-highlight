@@ -6,14 +6,14 @@ using System.Threading.Tasks;
 
 namespace Cake.Additoins
 {
-    class CakeFunctions
+    public class CakeFunctions
     {
         public static IEnumerable<string> Functions =
             new[]
             {
                 "copyfiles",
-                "Copyfile",
-                "Removefile",
+                "copyfile",
+                "removefile",
                 "removefiles"
             };
     }

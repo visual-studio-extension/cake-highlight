@@ -38,29 +38,6 @@ namespace Cake
         }
     }
 
-
-    /// <summary>
-    /// Defines the editor format for the reservedWord classification type. Text is colored Green
-    /// </summary>
-    [Export(typeof(EditorFormatDefinition))]
-    [ClassificationType(ClassificationTypeNames = "functions")]
-    [Name("functions")]
-    //this should be visible to the end user
-    [UserVisible(false)]
-    //set the priority to be after the default classifiers
-    [Order(Before = Priority.Default)]
-    internal sealed class Functions : ClassificationFormatDefinition
-    {
-        /// <summary>
-        /// Defines the visual format for the "question" classification type
-        /// </summary>
-        public Functions()
-        {
-            DisplayName = "functions"; //human readable version of the name
-            ForegroundColor = Colors.Green;
-        }
-    }
-
     /// <summary>
     /// Defines the editor format for the operator classification type. Text is colored Green
     /// </summary>
@@ -82,4 +59,20 @@ namespace Cake
             ForegroundColor = Colors.ForestGreen;
         }
     }
+
+    [Export(typeof(EditorFormatDefinition))]
+    [ClassificationType(ClassificationTypeNames = "functions")]
+    [Name("functions")]
+    [UserVisible(false)]
+    [Order(Before = Priority.Default)]
+    internal sealed class Functions : ClassificationFormatDefinition
+    {
+        public Functions()
+        {
+            DisplayName = "functions"; 
+            ForegroundColor = Colors.Green;
+        }
+    }
+
+
 }

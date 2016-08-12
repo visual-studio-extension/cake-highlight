@@ -90,9 +90,9 @@ namespace Cake
 
             var functions = CakeFunctions.Functions;
 
-            functions.ToList().ForEach(fun => {
-                _cakeTypes[fun] = CakeTokenTypes.Functions;
-            });
+            //functions.ToList().ForEach(fun => {
+            //    _cakeTypes[fun] = CakeTokenTypes.Functions;
+            //});
         }
 
         public event EventHandler<SnapshotSpanEventArgs> TagsChanged
