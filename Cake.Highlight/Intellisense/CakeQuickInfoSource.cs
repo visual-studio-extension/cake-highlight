@@ -73,19 +73,19 @@ namespace Cake
 
             foreach (IMappingTagSpan<CakeTokenTag> curTag in _aggregator.GetTags(new SnapshotSpan(triggerPoint, triggerPoint)))
             {
-                if (curTag.Tag.type == CakeTokenTypes.ReservedWord)
+                if (curTag.Tag.Type == CakeTokenTypes.ReservedWord)
                 {
                     var tagSpan = curTag.Span.GetSpans(_buffer).First();
                     applicableToSpan = _buffer.CurrentSnapshot.CreateTrackingSpan(tagSpan, SpanTrackingMode.EdgeExclusive);
                     quickInfoContent.Add("A reserved word");
                 }
-                else if (curTag.Tag.type == CakeTokenTypes.Operators)
+                else if (curTag.Tag.Type == CakeTokenTypes.Operators)
                 {
                     var tagSpan = curTag.Span.GetSpans(_buffer).First();
                     applicableToSpan = _buffer.CurrentSnapshot.CreateTrackingSpan(tagSpan, SpanTrackingMode.EdgeExclusive);
                     quickInfoContent.Add("A language operator");
                 }
-                else if (curTag.Tag.type == CakeTokenTypes.Functions)
+                else if (curTag.Tag.Type == CakeTokenTypes.Functions)
                 {
                     var tagSpan = curTag.Span.GetSpans(_buffer).First();
                     applicableToSpan = _buffer.CurrentSnapshot.CreateTrackingSpan(tagSpan, SpanTrackingMode.EdgeExclusive);

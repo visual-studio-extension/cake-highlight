@@ -89,7 +89,7 @@ namespace Cake
                 var tagSpans = tagSpan.Span.GetSpans(spans[0].Snapshot);
                 yield return 
                     new TagSpan<ClassificationTag>(tagSpans[0], 
-                                                   new ClassificationTag(_cakeTypes[tagSpan.Tag.type]));
+                                                   new ClassificationTag(_cakeTypes[tagSpan.Tag.Type]));
             }
         }
     }

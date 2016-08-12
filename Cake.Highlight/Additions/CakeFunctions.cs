@@ -4,17 +4,17 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Cake.Intellisense
+namespace Cake.Additoins
 {
     class CakeFunctions
     {
         public static IEnumerable<string> Functions =
             new[]
             {
-                "CopyFiles",
-                "CopyFile",
-                "RemoveFile",
-                "RemoveFiles"
+                "copyfiles",
+                "Copyfile",
+                "Removefile",
+                "removefiles"
             };
     }
 }

@@ -18,7 +18,7 @@ namespace Cake
     using Microsoft.VisualStudio.Text.Tagging;
     using Microsoft.VisualStudio.Utilities;
     using System.Linq;
-    using Intellisense;
+    using Additoins;
 
     [Export(typeof(ITaggerProvider))]
     [ContentType("cake")]
@@ -34,11 +34,11 @@ namespace Cake
 
     public class CakeTokenTag : ITag 
     {
-        public CakeTokenTypes type { get; private set; }
+        public CakeTokenTypes Type { get; private set; }
 
         public CakeTokenTag(CakeTokenTypes type)
         {
-            this.type = type;
+            this.Type = type;
         }
     }
 
