@@ -34,7 +34,7 @@ namespace Cake
         public ReservedWord()
         {
             DisplayName = "reservedWord"; //human readable version of the name
-            ForegroundColor = Colors.Firebrick;
+            ForegroundColor = Colors.MediumPurple;
         }
     }
 
@@ -69,8 +69,8 @@ namespace Cake
     {
         public Functions()
         {
-            DisplayName = "functions"; 
-            ForegroundColor = Colors.Green;
+            DisplayName = "functions";
+            ForegroundColor = Colors.Orange;
         }
     }
 

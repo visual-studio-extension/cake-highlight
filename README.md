@@ -12,9 +12,3 @@ Visual Studio extension that provides syntax highlighting for cake language.
 "Microsoft.VisualStudio.Shell.Interop.12.0": "12.0.30110",
 "Microsoft.VSSDK.BuildTools": "14.0.23205"
 ```
-
-## Notes
-
-- CakeClassifierProvider: ITaggerProvider
-- CakeClassifier: ITagger<ClassificationTag>
-

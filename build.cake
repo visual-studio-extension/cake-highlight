@@ -11,6 +11,12 @@ Task("Reset-Experimental-Instance").Does(() => {
     });
 });
 
+Task("View-Log")
+    .Does(() => {
+        var path = @"C:\Users\wk\AppData\Roaming\Microsoft\VisualStudio\14.0Exp\ActivityLog.xml";
+        StartProcess("notepad", new ProcessSettings { Arguments = path } );
+    });
+
 Task("Build-Debug")
     .Does(() => {
         MSBuild(solution, new MSBuildSettings {

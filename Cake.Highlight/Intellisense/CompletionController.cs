@@ -110,7 +110,7 @@ namespace Cake
                     {
                         case VSConstants.VSStd2KCmdID.TYPECHAR:
                             char ch = GetTypeChar(pvaIn);
-                            if (ch == ' ')
+                            if(ch == ' ')
                                 StartSession();
                             else if (_currentSession != null)
                                 Filter();

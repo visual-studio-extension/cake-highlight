@@ -46,33 +46,16 @@ namespace Cake
             if (_disposed)
                 throw new ObjectDisposedException("CakeCompletionSource");
 
-            List<Completion> completions = new List<Completion>()
-            {
-                new Completion("and"),
-                new Completion("break"),
-                new Completion("do"),
-                new Completion("else"),
-                new Completion("elseif"),
-                new Completion("end"),
-                new Completion("false"),
-                new Completion("for"),
-                new Completion("function"),
-                new Completion("if"),
-                new Completion("local"),
-                new Completion("nil"),
-                new Completion("not"),
-                new Completion("or"),
-                new Completion("repeat"),
-                new Completion("return"),
-                new Completion("then"),
-                new Completion("true"),
-                new Completion("until"),
-                new Completion("while")
+            var completions = new List<Completion>();
+            var snapshot = _buffer.CurrentSnapshot;
+
+            Action<IEnumerable<string>> addRange = (range) => {
+                var c = range.Select(x => new Completion(x));
+                completions.AddRange(c);
             };
 
-            CakeFunctions.Functions.ToList().ForEach(x => completions.Add(new Completion(x)));
+            addRange(CakeFunctions.Functions);
             
-            ITextSnapshot snapshot = _buffer.CurrentSnapshot;
             var triggerPoint = (SnapshotPoint)session.GetTriggerPoint(snapshot);
 
             if (triggerPoint == null)
