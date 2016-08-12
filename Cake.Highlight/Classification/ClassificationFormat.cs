@@ -54,7 +54,7 @@ namespace Cake.Classification
         public CakeFunctions()
         {
             DisplayName = "cakeFunctions";
-            ForegroundColor = Colors.ForestGreen;
+            ForegroundColor = Colors.Orange;
         }
     }
 }

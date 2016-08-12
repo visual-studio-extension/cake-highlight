@@ -39,12 +39,13 @@ namespace Cake
             var completions = new List<Completion>();
             var snapshot = _buffer.CurrentSnapshot;
 
+            /*
             Action<IEnumerable<string>> addRange = (range) => {
                 var c = range.Select(x => new Completion(x));
                 completions.AddRange(c);
             };
-
-            //addRange(CakeKeyword.Functions);
+            addRange(CakeKeyword.Functions);
+            */
             
             var triggerPoint = (SnapshotPoint)session.GetTriggerPoint(snapshot);
 

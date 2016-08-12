@@ -25,10 +25,8 @@ namespace Cake.Classification
         [Name("operators")]
         internal static ClassificationTypeDefinition operators = null;
 
-        /*
         [Export(typeof(ClassificationTypeDefinition))]
         [Name("cakeFunctions")]
-        internal static ClassificationFormatDefinition cakeFunctions = null;
-        */
+        internal static ClassificationTypeDefinition cakeFunctions = null;
     }
 }

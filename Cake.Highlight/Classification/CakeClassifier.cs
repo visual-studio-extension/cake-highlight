@@ -18,6 +18,7 @@ namespace Cake.Classification
     using Microsoft.VisualStudio.Text.Classification;
     using Microsoft.VisualStudio.Text.Tagging;
     using Microsoft.VisualStudio.Utilities;
+    using System.Diagnostics;
 
     internal sealed class CakeClassifier : ITagger<ClassificationTag>
     {
@@ -25,8 +26,8 @@ namespace Cake.Classification
         ITagAggregator<CakeTokenTag> _aggregator;
         IDictionary<CakeTokenTypes, IClassificationType> _cakeTypes;
 
-        internal CakeClassifier(ITextBuffer buffer, 
-                               ITagAggregator<CakeTokenTag> cakeTagAggregator, 
+        internal CakeClassifier(ITextBuffer buffer,
+                               ITagAggregator<CakeTokenTag> cakeTagAggregator,
                                IClassificationTypeRegistryService typeService)
         {
             _buffer = buffer;
@@ -34,7 +35,7 @@ namespace Cake.Classification
             _cakeTypes = new Dictionary<CakeTokenTypes, IClassificationType>();
             _cakeTypes[CakeTokenTypes.ReservedWord] = typeService.GetClassificationType("ReservedWord");
             _cakeTypes[CakeTokenTypes.Operators] = typeService.GetClassificationType("Operators");
-            _cakeTypes[CakeTokenTypes.CakeFunctions] = typeService.GetClassificationType("FakeFunctions");
+            _cakeTypes[CakeTokenTypes.CakeFunctions] = typeService.GetClassificationType("CakeFunctions");
         }
 
         public event EventHandler<SnapshotSpanEventArgs> TagsChanged
@@ -47,9 +48,11 @@ namespace Cake.Classification
         {
             foreach (var tagSpan in _aggregator.GetTags(spans))
             {
-                var tagSpans = tagSpan.Span.GetSpans(spans[0].Snapshot);
-                yield return 
-                    new TagSpan<ClassificationTag>(tagSpans[0], new ClassificationTag(_cakeTypes[tagSpan.Tag.Type]));
+                var span = spans[0];
+                var tagSpans = tagSpan.Span.GetSpans(span.Snapshot);
+                var classTag = new ClassificationTag(_cakeTypes[tagSpan.Tag.Type]);
+                var newTagSpan = new TagSpan<ClassificationTag>(tagSpans[0], classTag);
+                yield return newTagSpan;
             }
         }
     }

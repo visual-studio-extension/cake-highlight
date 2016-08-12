@@ -3,9 +3,6 @@ using Microsoft.VisualStudio.Text;
 using Microsoft.VisualStudio.Text.Tagging;
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Cake.Tags
 {
@@ -36,7 +33,7 @@ namespace Cake.Tags
 
             foreach (var word in CakeKeyword.Functions)
             {
-                //_cakeTypes[word] = CakeTokenTypes.CakeFunctions;
+                _cakeTypes[word] = CakeTokenTypes.CakeFunctions;
             }
 ;
         }
@@ -49,7 +46,6 @@ namespace Cake.Tags
 
         public IEnumerable<ITagSpan<CakeTokenTag>> GetTags(NormalizedSnapshotSpanCollection spans)
         {
-
             foreach (SnapshotSpan curSpan in spans)
             {
                 ITextSnapshotLine containingLine = curSpan.Start.GetContainingLine();
@@ -62,15 +58,17 @@ namespace Cake.Tags
                     {
                         var tokenSpan = new SnapshotSpan(curSpan.Snapshot, new Span(curLoc, cakeToken.Length));
                         if (tokenSpan.IntersectsWith(curSpan))
-                            yield return new TagSpan<CakeTokenTag>(tokenSpan, new CakeTokenTag(_cakeTypes[cakeToken]));
+                        {
+                            var tag = new CakeTokenTag(_cakeTypes[cakeToken]);
+                            var span = new TagSpan<CakeTokenTag>(tokenSpan, tag);
+                            yield return span;
+                        }
                     }
 
                     //add an extra char location because of the space
                     curLoc += cakeToken.Length + 1;
                 }
             }
-
         }
     }
-
 }

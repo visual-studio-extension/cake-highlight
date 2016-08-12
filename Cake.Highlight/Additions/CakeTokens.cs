@@ -28,6 +28,13 @@ namespace Cake.Additoins
         public static string[] Functions =
             new[]
             {
+                "Argument",
+                "HasArgument",
+                "Zip",
+                "UnZip",
+                "CreateAssemblyInfo",
+                "CreateAssemblyInfo",
+                "DotNetBuild",
                 "CopyFiles",
                 "RemoveFiles",
             };
