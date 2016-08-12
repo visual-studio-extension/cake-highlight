@@ -14,23 +14,15 @@ using System.Windows.Media;
 using Microsoft.VisualStudio.Text.Classification;
 using Microsoft.VisualStudio.Utilities;
 
-namespace Cake
+namespace Cake.Classification
 {
-    /// <summary>
-    /// Defines the editor format for the reservedWord classification type. Text is colored Green
-    /// </summary>
     [Export(typeof(EditorFormatDefinition))]
     [ClassificationType(ClassificationTypeNames = "reservedWord")]
     [Name("reservedWord")]
-    //this should be visible to the end user
     [UserVisible(false)]
-    //set the priority to be after the default classifiers
     [Order(Before = Priority.Default)]
     internal sealed class ReservedWord : ClassificationFormatDefinition
     {
-        /// <summary>
-        /// Defines the visual format for the "question" classification type
-        /// </summary>
         public ReservedWord()
         {
             DisplayName = "reservedWord"; //human readable version of the name
@@ -38,21 +30,13 @@ namespace Cake
         }
     }
 
-    /// <summary>
-    /// Defines the editor format for the operator classification type. Text is colored Green
-    /// </summary>
     [Export(typeof(EditorFormatDefinition))]
     [ClassificationType(ClassificationTypeNames = "operators")]
     [Name("operators")]
-    //this should be visible to the end user
     [UserVisible(false)]
-    //set the priority to be after the default classifiers
     [Order(Before = Priority.Default)]
     internal sealed class Operators : ClassificationFormatDefinition
     {
-        /// <summary>
-        /// Defines the visual format for the "question" classification type
-        /// </summary>
         public Operators()
         {
             DisplayName = "operators"; //human readable version of the name
@@ -61,18 +45,16 @@ namespace Cake
     }
 
     [Export(typeof(EditorFormatDefinition))]
-    [ClassificationType(ClassificationTypeNames = "functions")]
-    [Name("functions")]
+    [ClassificationType(ClassificationTypeNames = "cakeFunctions")]
+    [Name("cakeFunctions")]
     [UserVisible(false)]
     [Order(Before = Priority.Default)]
-    internal sealed class Functions : ClassificationFormatDefinition
+    internal sealed class CakeFunctions : ClassificationFormatDefinition
     {
-        public Functions()
+        public CakeFunctions()
         {
-            DisplayName = "functions";
-            ForegroundColor = Colors.Orange;
+            DisplayName = "cakeFunctions";
+            ForegroundColor = Colors.ForestGreen;
         }
     }
-
-
 }

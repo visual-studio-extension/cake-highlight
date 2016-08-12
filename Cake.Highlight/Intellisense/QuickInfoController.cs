@@ -19,11 +19,9 @@ using Microsoft.VisualStudio.Utilities;
 
 namespace VSLTK.Intellisense
 {
-    #region IIntellisenseController
 
     internal class TemplateQuickInfoController : IIntellisenseController
     {
-        #region Private Data Members
 
         private ITextView _textView;
         private IList<ITextBuffer> _subjectBuffers;
@@ -31,9 +29,6 @@ namespace VSLTK.Intellisense
 
         private IQuickInfoSession _session;
 
-        #endregion
-
-        #region Constructors
 
         internal TemplateQuickInfoController(ITextView textView, IList<ITextBuffer> subjectBuffers, TemplateQuickInfoControllerProvider componentContext)
         {
@@ -44,9 +39,6 @@ namespace VSLTK.Intellisense
             _textView.MouseHover += OnTextViewMouseHover;
         }
 
-        #endregion
-
-        #region IIntellisenseController Members
 
         public void ConnectSubjectBuffer(ITextBuffer subjectBuffer)
         {
@@ -65,13 +57,6 @@ namespace VSLTK.Intellisense
             }
         }
 
-        #endregion
-
-        #region Event Handlers
-
-        /// <summary>
-        /// Determine if the mouse is hovering over a token. If so, highlight the token and display QuickInfo
-        /// </summary>
         private void OnTextViewMouseHover(object sender, MouseHoverEventArgs e)
         {
             SnapshotPoint? point = GetMousePosition(new SnapshotPoint(_textView.TextSnapshot, e.Position));
@@ -91,13 +76,6 @@ namespace VSLTK.Intellisense
             }
         }
 
-        #endregion
-
-        #region Private Implementation
-
-        /// <summary>
-        /// get mouse location onscreen. Used to determine what word the cursor is currently hovering over
-        /// </summary>
         private SnapshotPoint? GetMousePosition(SnapshotPoint topPosition)
         {
             // Map this point down to the appropriate subject buffer.
@@ -110,9 +88,5 @@ namespace VSLTK.Intellisense
                 PositionAffinity.Predecessor
                 );
         }
-
-        #endregion
     }
-
-    #endregion
 }

@@ -20,29 +20,8 @@ using Microsoft.VisualStudio.Text.Tagging;
 using System.ComponentModel.Composition;
 using Microsoft.VisualStudio.Utilities;
 
-namespace Cake
+namespace Cake.Intellicense
 {
-    /// <summary>
-    /// Factory for quick info sources
-    /// </summary>
-    [Export(typeof(IQuickInfoSourceProvider))]
-    [ContentType("cake")]
-    [Name("cakeQuickInfo")]
-    class CakeQuickInfoSourceProvider : IQuickInfoSourceProvider
-    {
-
-        [Import]
-        IBufferTagAggregatorFactoryService aggService = null;
-
-        public IQuickInfoSource TryCreateQuickInfoSource(ITextBuffer textBuffer)
-        {
-            return new CakeQuickInfoSource(textBuffer, aggService.CreateTagAggregator<CakeTokenTag>(textBuffer));
-        }
-    }
-
-    /// <summary>
-    /// Provides QuickInfo information to be displayed in a text buffer
-    /// </summary>
     class CakeQuickInfoSource : IQuickInfoSource
     {
         private ITagAggregator<CakeTokenTag> _aggregator;
@@ -56,9 +35,6 @@ namespace Cake
             _buffer = buffer;
         }
 
-        /// <summary>
-        /// Determine which pieces of Quickinfo content should be displayed
-        /// </summary>
         public void AugmentQuickInfoSession(IQuickInfoSession session, IList<object> quickInfoContent, out ITrackingSpan applicableToSpan)
         {
             applicableToSpan = null;
@@ -85,7 +61,7 @@ namespace Cake
                     applicableToSpan = _buffer.CurrentSnapshot.CreateTrackingSpan(tagSpan, SpanTrackingMode.EdgeExclusive);
                     quickInfoContent.Add("A language operator");
                 }
-                else if (curTag.Tag.Type == CakeTokenTypes.Functions)
+                else if (curTag.Tag.Type == CakeTokenTypes.CakeFunctions)
                 {
                     var tagSpan = curTag.Span.GetSpans(_buffer).First();
                     applicableToSpan = _buffer.CurrentSnapshot.CreateTrackingSpan(tagSpan, SpanTrackingMode.EdgeExclusive);

@@ -13,27 +13,22 @@ using System.ComponentModel.Composition;
 using Microsoft.VisualStudio.Text.Classification;
 using Microsoft.VisualStudio.Utilities;
 
-namespace Cake
+namespace Cake.Classification
 {
     internal static class OrdinaryClassificationDefinition
     {
-        /// <summary>
-        /// Defines the "reservedWord" classification type.
-        /// </summary>
         [Export(typeof(ClassificationTypeDefinition))]
         [Name("reservedWord")]
         internal static ClassificationTypeDefinition reservedWord = null;
 
-        /// <summary>
-        /// Defines the "operator" classification type.
-        /// </summary>
         [Export(typeof(ClassificationTypeDefinition))]
         [Name("operators")]
         internal static ClassificationTypeDefinition operators = null;
 
-
-        [Export(typeof(ClassificationFormatDefinition))]
-        [Name("functions")]
-        internal static ClassificationFormatDefinition functions = null;
+        /*
+        [Export(typeof(ClassificationTypeDefinition))]
+        [Name("cakeFunctions")]
+        internal static ClassificationFormatDefinition cakeFunctions = null;
+        */
     }
 }

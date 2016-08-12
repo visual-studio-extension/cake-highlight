@@ -6,8 +6,25 @@ using System.Threading.Tasks;
 
 namespace Cake.Additoins
 {
-    public class CakeFunctions
+    public class CakeKeyword
     {
+        public static string[] Operators =
+            new[] {
+                "+=",
+                "+",
+                "-=",
+                "*",
+                "/",
+                ">=",
+                "<=",
+                ">",
+                "<",
+                "&&",
+                "||",
+                "=",
+                "%"
+            };
+
         public static string[] Functions =
             new[]
             {

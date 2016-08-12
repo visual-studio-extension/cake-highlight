@@ -9,7 +9,7 @@
 //
 //***************************************************************************
 
-namespace Cake
+namespace Cake.Classification
 {
     using System;
     using System.Collections.Generic;
@@ -19,47 +19,12 @@ namespace Cake
     using Microsoft.VisualStudio.Text.Tagging;
     using Microsoft.VisualStudio.Utilities;
 
-    [Export(typeof(ITaggerProvider))]
-    [ContentType("cake")]
-    [TagType(typeof(ClassificationTag))]
-    internal sealed class CakeClassifierProvider : ITaggerProvider
-    {
-
-        [Export]
-        [Name("cake")]
-        [BaseDefinition("code")]
-        internal static ContentTypeDefinition CakeContentType = null;
-
-        [Export]
-        [FileExtension(".cake")]
-        [ContentType("cake")]
-        internal static FileExtensionToContentTypeDefinition CakeFileType = null;
-
-        [Import]
-        internal IClassificationTypeRegistryService ClassificationTypeRegistry = null;
-
-        [Import]
-        internal IBufferTagAggregatorFactoryService aggregatorFactory = null;
-
-        public ITagger<T> CreateTagger<T>(ITextBuffer buffer) where T : ITag
-        {
-
-            ITagAggregator<CakeTokenTag> cakeTagAggregator = 
-                                            aggregatorFactory.CreateTagAggregator<CakeTokenTag>(buffer);
-
-            return new CakeClassifier(buffer, cakeTagAggregator, ClassificationTypeRegistry) as ITagger<T>;
-        }
-    }
-
     internal sealed class CakeClassifier : ITagger<ClassificationTag>
     {
         ITextBuffer _buffer;
         ITagAggregator<CakeTokenTag> _aggregator;
         IDictionary<CakeTokenTypes, IClassificationType> _cakeTypes;
 
-        /// <summary>
-        /// Construct the classifier and define search tokens
-        /// </summary>
         internal CakeClassifier(ITextBuffer buffer, 
                                ITagAggregator<CakeTokenTag> cakeTagAggregator, 
                                IClassificationTypeRegistryService typeService)
@@ -69,7 +34,7 @@ namespace Cake
             _cakeTypes = new Dictionary<CakeTokenTypes, IClassificationType>();
             _cakeTypes[CakeTokenTypes.ReservedWord] = typeService.GetClassificationType("ReservedWord");
             _cakeTypes[CakeTokenTypes.Operators] = typeService.GetClassificationType("Operators");
-            _cakeTypes[CakeTokenTypes.Functions] = typeService.GetClassificationType("Functions");
+            _cakeTypes[CakeTokenTypes.CakeFunctions] = typeService.GetClassificationType("FakeFunctions");
         }
 
         public event EventHandler<SnapshotSpanEventArgs> TagsChanged
@@ -78,17 +43,13 @@ namespace Cake
             remove { }
         }
 
-        /// <summary>
-        /// Search the given span for any instances of classified tags
-        /// </summary>
         public IEnumerable<ITagSpan<ClassificationTag>> GetTags(NormalizedSnapshotSpanCollection spans)
         {
             foreach (var tagSpan in _aggregator.GetTags(spans))
             {
                 var tagSpans = tagSpan.Span.GetSpans(spans[0].Snapshot);
                 yield return 
-                    new TagSpan<ClassificationTag>(tagSpans[0], 
-                                                   new ClassificationTag(_cakeTypes[tagSpan.Tag.Type]));
+                    new TagSpan<ClassificationTag>(tagSpans[0], new ClassificationTag(_cakeTypes[tagSpan.Tag.Type]));
             }
         }
     }

@@ -20,16 +20,6 @@ using Cake.Additoins;
 
 namespace Cake
 {
-    [Export(typeof(ICompletionSourceProvider))]
-    [ContentType("cake")]
-    [Name("cakeCompletion")]
-    class CakeCompletionSourceProvider : ICompletionSourceProvider
-    {
-        public ICompletionSource TryCreateCompletionSource(ITextBuffer textBuffer)
-        {
-            return new CakeCompletionSource(textBuffer);
-        }
-    }
 
     class CakeCompletionSource : ICompletionSource
     {
@@ -54,7 +44,7 @@ namespace Cake
                 completions.AddRange(c);
             };
 
-            addRange(CakeFunctions.Functions);
+            //addRange(CakeKeyword.Functions);
             
             var triggerPoint = (SnapshotPoint)session.GetTriggerPoint(snapshot);
 
