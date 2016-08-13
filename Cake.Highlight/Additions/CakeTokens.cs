@@ -10,6 +10,7 @@ namespace Cake.Additoins
     {
         public static string[] Operators =
             new[] {
+                "=>",
                 "+=",
                 "+",
                 "-=",

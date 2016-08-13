@@ -36,6 +36,7 @@ namespace Cake.Classification
             _cakeTypes[CakeTokenTypes.ReservedWord] = typeService.GetClassificationType("ReservedWord");
             _cakeTypes[CakeTokenTypes.Operators] = typeService.GetClassificationType("Operators");
             _cakeTypes[CakeTokenTypes.CakeFunctions] = typeService.GetClassificationType("CakeFunctions");
+            _cakeTypes[CakeTokenTypes.Quote] = typeService.GetClassificationType("Quote");
         }
 
         public event EventHandler<SnapshotSpanEventArgs> TagsChanged

@@ -3,13 +3,30 @@ using Microsoft.VisualStudio.Text;
 using Microsoft.VisualStudio.Text.Tagging;
 using System;
 using System.Collections.Generic;
+using System.Text.RegularExpressions;
 
 namespace Cake.Tags
 {
+    public class Definition
+    {
+        public CakeTokenTypes TokenType { set; get; }
+        public Regex Regex { set; get; }
+    }
     internal sealed class CakeTokenTagger : ITagger<CakeTokenTag>
     {
+
         ITextBuffer _buffer;
         IDictionary<string, CakeTokenTypes> _cakeTypes;
+
+
+        List<Definition> _definitions = new List<Definition>()
+        {
+            new Definition {
+                TokenType = CakeTokenTypes.Quote,
+                Regex = new Regex("\\\"(.*?)\\\"", RegexOptions.IgnoreCase)
+            }
+        };
+
 
         internal CakeTokenTagger(ITextBuffer buffer)
         {
@@ -67,6 +84,30 @@ namespace Cake.Tags
 
                     //add an extra char location because of the space
                     curLoc += cakeToken.Length + 1;
+                }
+            }
+
+            foreach (var span in spans)
+            {
+                ITextSnapshotLine line = span.Start.GetContainingLine();
+                int location = line.Start.Position;
+                string text = line.GetText();
+
+                foreach (var definition in _definitions)
+                {
+                    if (definition.Regex.IsMatch(text))
+                    {
+                        MatchCollection matches = definition.Regex.Matches(text);
+
+                        foreach (Match m in matches)
+                        {
+                            var token = new CakeTokenTag(definition.TokenType);
+                            var snap = new SnapshotSpan(span.Snapshot, location + m.Index, m.Length);
+                            yield return
+                                new TagSpan<CakeTokenTag>(snap, token);
+                        }
+
+                    }
                 }
             }
         }

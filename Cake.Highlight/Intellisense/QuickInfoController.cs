@@ -80,13 +80,11 @@ namespace VSLTK.Intellisense
         {
             // Map this point down to the appropriate subject buffer.
 
-            return _textView.BufferGraph.MapDownToFirstMatch
-                (
+            return _textView.BufferGraph.MapDownToFirstMatch(
                 topPosition,
                 PointTrackingMode.Positive,
                 snapshot => _subjectBuffers.Contains(snapshot.TextBuffer),
-                PositionAffinity.Predecessor
-                );
+                PositionAffinity.Predecessor);
         }
     }
 }

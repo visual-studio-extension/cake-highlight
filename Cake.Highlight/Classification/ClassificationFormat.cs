@@ -40,7 +40,7 @@ namespace Cake.Classification
         public Operators()
         {
             DisplayName = "operators"; //human readable version of the name
-            ForegroundColor = Colors.ForestGreen;
+            ForegroundColor = Colors.PaleVioletRed;
         }
     }
 
@@ -56,5 +56,20 @@ namespace Cake.Classification
             DisplayName = "cakeFunctions";
             ForegroundColor = Colors.Orange;
         }
+    }
+
+    [Export(typeof(EditorFormatDefinition))]
+    [ClassificationType(ClassificationTypeNames = "quote")]
+    [Name("quote")]
+    [UserVisible(false)]
+    [Order(Before = Priority.Default)]
+    internal sealed class Quote : ClassificationFormatDefinition
+    {
+        public Quote()
+        {
+            DisplayName = "quote";
+            ForegroundColor = Colors.LimeGreen;
+        }
+
     }
 }

@@ -28,5 +28,9 @@ namespace Cake.Classification
         [Export(typeof(ClassificationTypeDefinition))]
         [Name("cakeFunctions")]
         internal static ClassificationTypeDefinition cakeFunctions = null;
+
+        [Export(typeof(ClassificationTypeDefinition))]
+        [Name("quote")]
+        internal static ClassificationTypeDefinition quote = null;
     }
 }
