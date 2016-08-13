@@ -8,7 +8,7 @@ namespace Cake.Hightlight.Tests.Spec
     public class RegexSpec
     {
         [Fact]
-        public void Hello()
+        public void SimpleQuote()
         {
             var pattern = "\\\"(.*?)\\\"";
             var data = @"Print(""Hello world"");";
@@ -21,18 +21,16 @@ namespace Cake.Hightlight.Tests.Spec
 
         }
 
-        [Fact]
-        public void VerbalExpression()
+        public void QuoteContainQuote()
         {
-            var verbEx = new VerbalExpressions()
-                        .StartOfLine()
-                        .Then("http")
-                        .Maybe("s")
-                        .Then("://")
-                        .Maybe("www.")
-                        .AnythingBut(" ")
-                        .EndOfLine();
+            var pattern = @"""[^""\\]*(?:\\.[^""\\]*)*""";
 
+            var data = @"Print(""Hello \""world"");";
+            var regex = new Regex(pattern);
+            var rs = regex.Matches(data);
+            rs.Count.Should().Be(1);
+
+            rs[0].Value.Should().Be(@"""Hello \""world""");
 
         }
     }

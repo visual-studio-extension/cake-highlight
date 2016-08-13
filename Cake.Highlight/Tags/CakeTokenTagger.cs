@@ -23,7 +23,8 @@ namespace Cake.Tags
         {
             new Definition {
                 TokenType = CakeTokenTypes.Quote,
-                Regex = new Regex("\\\"(.*?)\\\"", RegexOptions.IgnoreCase)
+                //Regex = new Regex("\\\"(.*?)\\\"", RegexOptions.IgnoreCase)
+                Regex = new Regex(@"""[^""\\]*(?:\\.[^""\\]*)*""", RegexOptions.IgnoreCase)
             }
         };
 
