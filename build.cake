@@ -6,6 +6,12 @@ var solution = "Cake.Highlight.sln";
 var testProj = @"Cake.Highlight.Tests/Cake.Highlight.Tests.csproj";
 var testDll = @"Cake.Highlight.tests/bin/Debug/Cake.Highlight.Tests.dll";
 
+var package = "Cake.Highlight/bin/Debug/JCake.Highlight.vsix";
+var assemblyInfo = "Cake.Highlight/Properties/AssemblyInfo.cs";
+
+var user = EnvironmentVariable("ghu");
+var pass = EnvironmentVariable("ghp");
+
 Action<string,string> build = (proj, target) => {
     MSBuild(proj, new MSBuildSettings {
         Verbosity = Verbosity.Minimal,
@@ -15,6 +21,34 @@ Action<string,string> build = (proj, target) => {
         PlatformTarget = PlatformTarget.MSIL
     }.WithTarget(target));
 };
+
+Task("Create-Github-Release")
+    .IsDependentOn("Build-Debug")
+    .Does(() => {
+        var asm = ParseAssemblyInfo(assemblyInfo);
+        var version = asm.AssemblyVersion;
+        var tag = string.Format("v{0}", version);
+        var args = string.Format("tag -a {0} -m \"{0}\"", tag);
+        var owner = "wk-j";
+        var repo = "cake-highlight";
+
+        StartProcess("git", new ProcessSettings {
+            Arguments = args
+        });
+
+        StartProcess("git", new ProcessSettings {
+            Arguments = string.Format("push https://{0}:{1}@github.com/wk-j/{2}.git {3}", user, pass, repo, tag)
+        });
+
+        GitReleaseManagerCreate(user, pass, owner , repo, new GitReleaseManagerCreateSettings {
+            Name              = tag,
+            InputFilePath = "RELEASE.md",
+            Prerelease        = false,
+            TargetCommitish   = "master",
+        });
+        GitReleaseManagerAddAssets(user, pass, owner, repo, tag, package);
+        GitReleaseManagerPublish(user, pass, owner , repo, tag);
+    });
 
 Task("fixie")
     .Does(() => {
